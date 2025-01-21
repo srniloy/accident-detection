@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Accident Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 0;
+            margin: 0;
+        }
+        #image-container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: white;
+            box-shadow: 5px 4px 8px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+        }
+        .info {
+            text-align: left;
+            margin: 10px 0;
+            line-height: 1.5;
+            font-size: 16px;
+        }
+        .info span {
+            font-weight: bold;
+        }
+        .accident-type {
+            color: red;
+            font-weight: bold;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 5px solid #007bff;
+            border-radius: 3px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Accident Update</h1>
+    <div id="image-container">
+        <p>No Accident yet...</p>
+    </div>
+
+    <script>
+        const imageContainer = document.getElementById('image-container');
+
+        // Connect to WebSocket server
+        const socket = new WebSocket(`ws://${window.location.host}`);
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log(data);
+            // Update the image display with new design
+            imageContainer.innerHTML = `
+                <div class="info">
+                    <p><span>Location:</span> ${data.location || 'Unknown'}</p>
+                    <p><span>Accident Type:</span> <span class="accident-type">${data.type || 'Unknown'}</span></p>
+                    <p><span>Probability:</span> ${data.prob ? data.prob + '%' : 'N/A'}</p>
+                </div>
+                <img src="${data.imageUrl}" alt="Accident Image">
+            `;
+        };
+
+        socket.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
+
+        socket.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+    </script>
+</body>
+</html>

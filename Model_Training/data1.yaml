@@ -1,0 +1,12 @@
+train: D:\GC_Paper\Implementation\dataset1\train\images
+val: D:\GC_Paper\Implementation\dataset1\valid\images
+test: D:\GC_Paper\Implementation\dataset1\test\images
+nc: 3
+names: ['accident', 'moderate', 'severe']
+
+roboflow:
+  workspace: ann-qwhjm
+  project: accident-detection-cwbvs
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/ann-qwhjm/accident-detection-cwbvs/dataset/2
